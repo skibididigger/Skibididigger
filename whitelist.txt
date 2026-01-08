@@ -1,1 +1,3 @@
+# My Whitelist File
+# Owner HWID
 49382ADA-D84F-4559-97A6-344138A09C74
