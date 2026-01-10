@@ -1414,9 +1414,10 @@ function MacLib:Window(Settings)
 			tabSwitcherUIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 			tabSwitcherUIStroke.Color = Color3.fromRGB(255, 255, 255)
 			tabSwitcherUIStroke.Transparency = 1
+			tabSwitcherUIStroke.Thickness = 4
 			tabSwitcherUIStroke.Parent = tabSwitcher
 			
-			
+			tabInfo.tabStroke = tabSwitcherUIStroke
 
 			local tabSwitcherUIListLayout = Instance.new("UIListLayout")
 			tabSwitcherUIListLayout.Name = "TabSwitcherUIListLayout"
@@ -4610,7 +4611,8 @@ function MacLib:Window(Settings)
 						Tween(tabInfo.tabStroke, TweenInfo.new(easetime, Enum.EasingStyle.Sine), {
 							Transparency = (i == tabSwitcher and 0 or 1)'
 						}):Play()
-					
+						tabInfo.tabStroke.Thickness = (i == tabSwitcher and 4 or 1)
+    					tabInfo.tabStroke.Color = (i == tabSwitcher and Color3.fromRGB(0, 255, 255) or Color3.fromRGB(0, 0, 0))
 
 						
 					end
