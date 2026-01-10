@@ -4593,46 +4593,39 @@ function MacLib:Window(Settings)
 			end
 
 			local function SelectCurrentTab()
-    local easetime = 0.15
+				local easetime = 0.15
 
-    if currentTabInstance then
-        currentTabInstance.Parent = nil
-    end
+				if currentTabInstance then
+					currentTabInstance.Parent = nil
+				end
 
-    for i, tabInfo in pairs(tabs) do
-        -- Tween the BUTTON, not the index
-        Tween(tabInfo.Button, TweenInfo. new(easetime, Enum. EasingStyle.Sine), {
-            BackgroundTransparency = (tabInfo.Button == tabSwitcher and 0.0 or 1)
-        }):Play()
+				for i, tabInfo in pairs(tabs) do
+					Tween(i, TweenInfo.new(easetime, Enum.EasingStyle.Sine), {
+						BackgroundTransparency = (i == tabSwitcher and 0.0 or 1)
+					}):Play()
 
-        if tabInfo.tabStroke then
-            Tween(tabInfo.tabStroke, TweenInfo.new(easetime, Enum.EasingStyle. Sine), {
-                Transparency = (tabInfo.Button == tabSwitcher and 0 or 1)
-            }):Play()
-            tabInfo.tabStroke. Thickness = (tabInfo.Button == tabSwitcher and 4 or 1)
-            tabInfo.tabStroke.Color = (tabInfo.Button == tabSwitcher and Color3.fromRGB(0, 255, 255) or Color3.fromRGB(0, 0, 0))
-        end
-
-        if tabInfo.switcherImage then
-            Tween(tabInfo.switcherImage, TweenInfo.new(easetime, Enum.EasingStyle. Sine), {
-                ImageTransparency = (tabInfo. Button == tabSwitcher and 0.5 or 0.5)  -- Adjust as needed
-            }):Play()
-        end
-
-        if tabInfo.switcherName then
-            Tween(tabInfo.switcherName, TweenInfo.new(easetime, Enum.EasingStyle. Sine), {
-                TextTransparency = (tabInfo. Button == tabSwitcher and 0 or 0.5)
-            }):Play()
-            tabInfo.switcherName.TextColor3 = (tabInfo. Button == tabSwitcher)
-                and Color3.fromRGB(0, 0, 0)       -- Selected:  Black text
-                or Color3.fromRGB(255, 255, 255)  -- Not selected: White text
-        end
-    end
-
-    tabs[tabSwitcher].tabContent.Parent = content
-    currentTabInstance = tabs[tabSwitcher]. tabContent
-    currentTab. Text = Settings.Name
+					if tabInfo.tabStroke then
+						Tween(tabInfo.tabStroke, TweenInfo.new(easetime, Enum.EasingStyle.Sine), {
+							Transparency = (i == tabSwitcher and 0 or 1)
+						}):Play()
+					end
+					if tabInfo.switcherImage then
+						Tween(tabInfo.switcherImage, TweenInfo.new(easetime, Enum.EasingStyle.Sine), {
+							ImageTransparency = (i == tabSwitcher and 5 or 0.5)
+						}):Play()
+						tabImage.switcherName.BackgroundColor3 = (i == tabSwitcher)
+							and Color3.fromRGB(0, 0, 0)       -- Selected: Black text
+      						or Color3.fromRGB(255, 255, 255)  -- Not selected: White text
+					end
+					if tabInfo.switcherName then
+    Tween(tabInfo.switcherName, TweenInfo.new(easetime, Enum.EasingStyle.Sine), {
+        TextTransparency = (i == tabSwitcher and 0 or 0.5)
+    }):Play()
+    tabInfo.switcherName.TextColor3 = (i == tabSwitcher)
+        and Color3.fromRGB(0, 0, 0)       -- Selected: Black text
+        or Color3.fromRGB(255, 255, 255)  -- Not selected: White text
 end
+
 				end
 
 				tabs[tabSwitcher].tabContent.Parent = content
@@ -5890,60 +5883,5 @@ function MacLib:Demo()
 	tabs.Main:Select()
 	MacLib:LoadAutoLoadConfig()
 end
-
-	function WindowFunctions: Tab(TabName)
-		local TabFunctions = {Settings = Settings}
-		tabIndex = tabIndex + 1
-		local currentTabIndex = tabIndex
-		
-		local tabSwitcher = Instance.new("TextButton")
-		tabSwitcher.Name = "TabSwitcher"
-		tabSwitcher.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro. json")
-		tabSwitcher.Text = TabName
-		tabSwitcher.TextColor3 = Color3.fromRGB(255, 255, 255)
-		tabSwitcher.TextSize = 14
-		tabSwitcher.AutoButtonColor = false
-		tabSwitcher.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-		tabSwitcher.BackgroundTransparency = 1
-		tabSwitcher.BorderSizePixel = 0
-		tabSwitcher.Size = UDim2.new(1, -20, 0, 35)
-		tabSwitcher.Parent = tabSwitchersScrollingFrame
-		
-		local tabContent = Instance.new("Frame")
-		tabContent.Name = TabName ..  "Content"
-		tabContent. BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-		tabContent.BackgroundTransparency = 1
-		tabContent.BorderSizePixel = 0
-		tabContent.Size = UDim2.fromScale(1, 1)
-		tabContent.Visible = false
-		tabContent.Parent = content
-		
-		tabs[currentTabIndex] = {
-			Button = tabSwitcher,
-			Content = tabContent,
-			Index = currentTabIndex
-		}
-		
-		currentTab. Text = TabName
-		
-		tabSwitcher.MouseButton1Click:Connect(function()
-			for _, tab in pairs(tabs) do
-				tab.Content.Visible = false
-				tab.Button.BackgroundTransparency = 1
-			end
-			tabContent.Visible = true
-			tabSwitcher.BackgroundTransparency = 0.85
-			currentTab.Text = TabName
-			currentTabInstance = tabContent
-		end)
-		
-		if currentTabIndex == 1 then
-			tabContent.Visible = true
-			tabSwitcher.BackgroundTransparency = 0.85
-			currentTabInstance = tabContent
-		end
-		
-		return TabFunctions
-	end
 
 return MacLib
