@@ -5891,4 +5891,59 @@ function MacLib:Demo()
 	MacLib:LoadAutoLoadConfig()
 end
 
+	function WindowFunctions: Tab(TabName)
+		local TabFunctions = {Settings = Settings}
+		tabIndex = tabIndex + 1
+		local currentTabIndex = tabIndex
+		
+		local tabSwitcher = Instance.new("TextButton")
+		tabSwitcher.Name = "TabSwitcher"
+		tabSwitcher.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro. json")
+		tabSwitcher.Text = TabName
+		tabSwitcher.TextColor3 = Color3.fromRGB(255, 255, 255)
+		tabSwitcher.TextSize = 14
+		tabSwitcher.AutoButtonColor = false
+		tabSwitcher.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		tabSwitcher.BackgroundTransparency = 1
+		tabSwitcher.BorderSizePixel = 0
+		tabSwitcher.Size = UDim2.new(1, -20, 0, 35)
+		tabSwitcher.Parent = tabSwitchersScrollingFrame
+		
+		local tabContent = Instance.new("Frame")
+		tabContent.Name = TabName ..  "Content"
+		tabContent. BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		tabContent.BackgroundTransparency = 1
+		tabContent.BorderSizePixel = 0
+		tabContent.Size = UDim2.fromScale(1, 1)
+		tabContent.Visible = false
+		tabContent.Parent = content
+		
+		tabs[currentTabIndex] = {
+			Button = tabSwitcher,
+			Content = tabContent,
+			Index = currentTabIndex
+		}
+		
+		currentTab. Text = TabName
+		
+		tabSwitcher.MouseButton1Click:Connect(function()
+			for _, tab in pairs(tabs) do
+				tab.Content.Visible = false
+				tab.Button.BackgroundTransparency = 1
+			end
+			tabContent.Visible = true
+			tabSwitcher.BackgroundTransparency = 0.85
+			currentTab.Text = TabName
+			currentTabInstance = tabContent
+		end)
+		
+		if currentTabIndex == 1 then
+			tabContent.Visible = true
+			tabSwitcher.BackgroundTransparency = 0.85
+			currentTabInstance = tabContent
+		end
+		
+		return TabFunctions
+	end
+
 return MacLib
