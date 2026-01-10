@@ -4593,6 +4593,45 @@ function MacLib:Window(Settings)
 			end
 
 			local function SelectCurrentTab()
+				local easetime = 0.15
+
+				if currentTabInstance then
+					currentTabInstance.Parent = nil
+				end
+
+				for i, tabInfo in pairs(tabs) do
+					Tween(i, TweenInfo.new(easetime, Enum.EasingStyle.Sine), {
+						BackgroundTransparency = (i == tabSwitcher and 0.0 or 1)
+					}):Play()
+
+					if tabInfo.tabStroke then
+						Tween(tabInfo.tabStroke, TweenInfo.new(easetime, Enum.EasingStyle.Sine), {
+							Transparency = (i == tabSwitcher and 0 or 1)
+						}):Play()
+					end
+					if tabInfo.switcherImage then
+						Tween(tabInfo.switcherImage, TweenInfo.new(easetime, Enum.EasingStyle.Sine), {
+							ImageTransparency = (i == tabSwitcher and 5 or 0.5)
+						}):Play()
+						tabImage.switcherName.BackgroundColor3 = (i == tabSwitcher)
+							and Color3.fromRGB(0, 0, 0)       -- Selected: Black text
+      						or Color3.fromRGB(255, 255, 255)  -- Not selected: White text
+					end
+					if tabInfo.switcherName then
+    Tween(tabInfo.switcherName, TweenInfo.new(easetime, Enum.EasingStyle.Sine), {
+        TextTransparency = (i == tabSwitcher and 0 or 0.5)
+    }):Play()
+    tabInfo.switcherName.TextColor3 = (i == tabSwitcher)
+        and Color3.fromRGB(0, 0, 0)       -- Selected: Black text
+        or Color3.fromRGB(255, 255, 255)  -- Not selected: White text
+end
+
+				end
+
+				tabs[tabSwitcher].tabContent.Parent = content
+				currentTabInstance = tabs[tabSwitcher].tabContent
+				currentTab.Text = Settings.Name
+			end
 
 			tabSwitcher.MouseButton1Click:Connect(function()
 				SelectCurrentTab()
